@@ -1,21 +1,27 @@
 #include <iostream>
 using namespace std;
 int main() {
-    int size;
+    int n;
     cout << "Enter the number of elements: ";
-    cin >> size;
-    int arr[size];
-    int sum = 0;
-    cout << "Enter the elements: " << endl;
-    for (int i = 0; i < size; i++) {
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements: ";
+    for (int i = 0; i < n; i++) {
         cin >> arr[i];
-        sum += arr[i];
     }
-    double average = (double)sum / size;
-    cout << "Average: " << average << endl;
+    int min = arr[0];
+    int max = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    cout << "Minimum value: " << min << endl;
+    cout << "Maximum value: " << max << endl;
     return 0;
 
 }
-
-
 
