@@ -1,53 +1,79 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
 using namespace std;
-
-bool isValidIdentifier(string str) {
-    if (str == "") {
-        return false;
-    }
-    char firstChar = str[0];
-    if ((firstChar >= 'A' && firstChar <= 'Z') ||
-        (firstChar >= 'a' && firstChar <= 'z') ||
-        firstChar == '_') {
-        for (int i = 1; i < str.length(); i++) {
-            char currentChar = str[i];
-            if (!((currentChar >= 'A' && currentChar <= 'Z') ||
-                  (currentChar >= 'a' && currentChar <= 'z') ||
-                  (currentChar >= '0' && currentChar <= '9') ||
-                  currentChar == '_')) {
-                return false;
-            }
-        }
-        return true;
-    }
-    return false;
-}
 
 int main() {
     ifstream file("D:\\New folder (4)\\compiler design lab\\New folder\\C lab\\sample text\\raz.txt");
-
     if (!file) {
         cout << "File not found!" << endl;
-        return 1;
+        return 0;
     }
 
-    string line;
+    string word;
+
+    while (file >> word) {
+        string token = "";
+
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word[i];
+
+            if (ch == '"') {
+                string strConst = "\"";
+                i++;
+                while (i < word.length() && word[i] != '"') {
+                    strConst += word[i];
+                    i++;
+                }
+                strConst += "\"";
+                cout << "Token: " << strConst << " -> CONSTANT" << endl;
+                continue;
+            }
 
 
-    while (getline(file, line)) {
-        cout << "Given line: " << line << endl;
+            if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '=' ||
+                ch == ';' || ch == ',' || ch == '(' || ch == ')' ||
+                ch == '{' || ch == '}') {
 
+                if (token != "") {
 
-        if (isValidIdentifier(line)) {
-            cout << line << " is a valid identifier." << endl;
-        } else {
-            cout << line << " is not a valid identifier." << endl;
+                    if (token[0] >= '0' && token[0] <= '9') {
+                        cout << "Token: " << token << " -> CONSTANT" << endl;
+                    }
+
+                    else if (token == "int" || token == "float" || token == "if" ||
+                             token == "else" || token == "while" || token == "for") {
+                        cout << "Token: " << token << " -> KEYWORD" << endl;
+                    }
+                    else {
+                        cout << "Token: " << token << " -> IDENTIFIER" << endl;
+                    }
+                    token = "";
+                }
+
+                if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '=') {
+                    cout << "Token: " << ch << " -> OPERATOR" << endl;
+                } else {
+                    cout << "Token: " << ch << " -> PUNCTUATION" << endl;
+                }
+            }
+            else {
+                token += ch;
+            }
+        }
+
+        if (token != "") {
+            if (token[0] >= '0' && token[0] <= '9') {
+                cout << "Token: " << token << " -> CONSTANT" << endl;
+            }
+            else if (token == "if else" || token == "where" || token == "if" ||
+                     token == "else" || token == "while" || token == "for") {
+                cout << "Token: " << token << " -> KEYWORD" << endl;
+            }
+            else {
+                cout << "Token: " << token << " -> IDENTIFIER" << endl;
+            }
         }
     }
-
-    file.close();
     return 0;
 }
