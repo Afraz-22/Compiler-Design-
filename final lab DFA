@@ -61,7 +61,7 @@ int moveState(int current, char input) {
 
 int main() {
     string input;
-    cout << "Enter string (a and b only): ";
+    cout << "Enter string (a,b): ";
     cin >> input;
 
     int currentState = 0;   // Start at state A
